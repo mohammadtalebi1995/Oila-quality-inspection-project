@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hdevelop file_version="1.2" halcon_version="18.11.0.1">
+<procedure name="main">
+<interface/>
+<body>
+<l>read_image (Image, 'C:/Users/NIS/Desktop/Oila/new/1.d.bmp')</l>
+<l>gen_ellipse (ROI_0, 992.206, 1132.4, rad(-55.1287), 809.472, 808.55)</l>
+<l>reduce_domain (Image, ROI_0, Empty)</l>
+<l>get_image_size (Empty, Width, Height) </l>
+<l>hom_mat2d_identity (HomMat2DIdentity)</l>
+<l>hom_mat2d_reflect (HomMat2DIdentity, Height, Width-1, Height, Width+1, HomMat2DReflect)</l>
+<l>affine_trans_image (Empty, ImageReflect, HomMat2DReflect, 'constant', 'false')</l>
+<l>full_domain (ImageReflect, ImageReflectFull)</l>
+<l>compose3 (Empty, ImageReflectFull, Empty, ImageColor)</l>
+<l>trans_to_rgb (ImageColor, ImageColor, ImageColor, ImageRed, ImageGreen, ImageBlue, 'cielab')</l>
+<l>* threshold (ImageRed, Region, 128, 255)</l>
+<c>*</c>
+<l>create_shape_model (ImageRed, 'auto', 0, rad(360), 'auto', 'auto', 'use_polarity', 15, 'auto', ModelID)</l>
+<l>find_shape_model (ImageRed, ModelID, 0, rad(360), 0.1, 1, 0.5, 'interpolation', 0, 0.9, Row, Column, Angle, Score)</l>
+<l>dev_display_shape_matching_results (ModelID, 'red', Row, Column, Angle, 1, 1, 0)</l>
+<c>*</c>
+<l>list_image_files ('C:/Users/NIS/Desktop/Oila/new', 'default', [], ImageFiles)</l>
+<l>for Index := 0 to |ImageFiles|-1 by 1</l>
+<l>    read_image (Image, ImageFiles[Index])</l>
+<l>*     find_shape_model (Image, ModelID, 0, rad(360), 0.1, 1, 0.5, 'interpolation', 0, 0.9, Row, Column, Angle, Score)</l>
+<l>*     dev_display_shape_matching_results (ModelID, 'red', Row, Column, Angle, 1, 1, 0)</l>
+<c>    *</c>
+<l>*     get_shape_model_contours (ModelContours, ModelID, 1)</l>
+<l>*     vector_angle_to_rigid (0, 0, 0, Row, Column, Angle, HomMat2D)</l>
+<l>*     affine_trans_contour_xld (ModelContours, ContoursAffineTrans, HomMat2D)</l>
+<l>*     union_adjacent_contours_xld (ContoursAffineTrans, UnionContours, 10, 10, 'attr_keep')</l>
+<l>*     gen_region_contour_xld (UnionContours, Region, 'filled')</l>
+<l>*     union1 (Region, RegionUnion)</l>
+<c>    *</c>
+<l>    gen_ellipse (ROI_0, 992.206, 1132.4, rad(-55.1287), 809.472, 808.55)</l>
+<l>    reduce_domain (Image, ROI_0, Empty)</l>
+<l>    get_image_size (Empty, Width, Height) </l>
+<l>    hom_mat2d_identity (HomMat2DIdentity)</l>
+<l>    hom_mat2d_reflect (HomMat2DIdentity, Height, Width-1, Height, Width+1, HomMat2DReflect)</l>
+<l>    affine_trans_image (Empty, ImageReflect, HomMat2DReflect, 'constant', 'false')</l>
+<l>    full_domain (ImageReflect, ImageReflectFull)</l>
+<l>    compose3 (Empty, ImageReflectFull, Empty, ImageColor)</l>
+<l>    trans_to_rgb (ImageColor, ImageColor, ImageColor, ImageRed, ImageGreen, ImageBlue, 'cielab')</l>
+<l>    dev_display (Image)</l>
+<l>    threshold (ImageRed, Region, 128, 255)</l>
+<l>    stop ()</l>
+<l>endfor</l>
+</body>
+<docu id="main">
+<parameters/>
+</docu>
+</procedure>
+</hdevelop>
