@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hdevelop file_version="1.2" halcon_version="18.11.0.1">
+<procedure name="main">
+<interface/>
+<body>
+<l>read_image (Image, 'C:/Users/NIS/Desktop/Oila/new/1.m.bmp')</l>
+<l>gen_circle (ROI_0, 990.267, 1150.69, 439.244)</l>
+<l>reduce_domain (Image, ROI_0, Empty)</l>
+<l>* smooth_image (Empty, ImageSmooth, 'gauss', 5)</l>
+<l>edges_image (Empty, ImaAmp, ImaDir, 'lanser1', 2, 'nms', 5, 17)</l>
+<l>threshold (ImaDir, Region3, 100, 255)</l>
+<c></c>
+<c></c>
+<l>read_image (Image1, 'C:/Users/NIS/Desktop/Oila/new/1.d.bmp')</l>
+<l>gen_circle (ROI_1, 990.267, 1150.69, 439.244)</l>
+<l>reduce_domain (Image1, ROI_1, Empty1)</l>
+<l>* smooth_image (Empty1, ImageSmooth, 'gauss', 5)</l>
+<l>edges_image (Empty1, ImaAmp1, ImaDir1, 'lanser1', 1, 'nms', 5, 20)</l>
+<l>threshold (ImaDir1, Region, 100, 255)</l>
+<c></c>
+<l>difference (Region, Region3, RegionDifference)</l>
+</body>
+<docu id="main">
+<parameters/>
+</docu>
+</procedure>
+</hdevelop>

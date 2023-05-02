@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hdevelop file_version="1.2" halcon_version="18.11.0.1">
+<procedure name="main">
+<interface/>
+<body>
+<l>read_image (Image, 'C:/Users/NIS/Desktop/Oila/color/dark room real/match/empty.bmp')</l>
+<l>gen_ellipse (ROI_0, 992.206, 1132.4, rad(-55.1287), 809.472, 808.55)</l>
+<l>reduce_domain (Image, ROI_0, Empty)</l>
+<l>threshold (Empty, Region, 0, 70)</l>
+<l>gen_contour_region_xld (Region, Contours, 'border')</l>
+<l>select_contours_xld (Contours, SelectedContours, 'contour_length', 500, 200000, -0.5, 0.5)</l>
+<l>gen_region_contour_xld (SelectedContours, Region1, 'filled')</l>
+<l>dilation1 (Region1, Region1, RegionDilation, 0.5)</l>
+<l>create_shape_model_xld (SelectedContours, 'auto', -0.39, 0.79, 'auto', 'auto', 'ignore_local_polarity', 5, ModelID)</l>
+<c>*</c>
+<l>read_image (Image1, 'C:/Users/NIS/Desktop/Oila/new/1.m.bmp')</l>
+<l>gen_ellipse (ROI_0, 992.206, 1132.4, rad(-55.1287), 809.472, 808.55)</l>
+<l>reduce_domain (Image1, ROI_0, Empty1)</l>
+<l>dev_clear_window ()</l>
+<l>dev_display (Empty1)</l>
+<l>median_rect (Empty1, ImageMedian, 13, 13)</l>
+<l>gen_circle (ROI_0, 1005.45, 1161.83, 428.122)</l>
+<l>reduce_domain (ImageMedian, ROI_0, ImageReduced)</l>
+<l>create_shape_model (ImageReduced, 'auto', 0, rad(360), 'auto', 'auto', 'use_polarity', 3, 'auto', ModelID1)</l>
+<l>find_shape_model (ImageReduced, ModelID1, 0, rad(360), 0.1, 1, 0.5, 'interpolation', 0, 0.9, Row, Column, Angle, Score)</l>
+<l>dev_display_shape_matching_results (ModelID1, 'red', Row, Column, Angle, 1, 1, 0)</l>
+<l>get_shape_model_contours (ModelContours1, ModelID1, 1)</l>
+<c>*</c>
+<l>stop ()</l>
+<l>list_image_files ('C:/Users/NIS/Desktop/Oila/new', 'default', [], ImageFiles)</l>
+<l>for Index := 0 to |ImageFiles|-1 by 1</l>
+<l>    read_image (Image2, ImageFiles[Index])</l>
+<l>    gen_ellipse (ROI_0, 992.206, 1132.4, rad(-55.1287), 809.472, 808.55)</l>
+<l>    reduce_domain (Image2, ROI_0, Empty2)</l>
+<l>    find_shape_model (Empty2, ModelID, 0, rad(360), 0.1, 1, 0.5, 'least_squares', 0, 0.9, Row, Column, Angle, Score)</l>
+<l>    get_shape_model_contours (ModelContours, ModelID, 1)</l>
+<l>    vector_angle_to_rigid (0, 0, 0, Row, Column, Angle, HomMat2D)</l>
+<l>    affine_trans_contour_xld (ModelContours, ContoursAffineTrans, HomMat2D)</l>
+<l>    dev_display_shape_matching_results (ModelID, 'red', Row, Column, Angle, 1, 1, 0)</l>
+<l>    emphasize (Empty2, SharpenedImage, 7, 7, 1)</l>
+<l>    dev_display (SharpenedImage)</l>
+<l>    dev_close_window ()</l>
+<l>    dev_open_window_fit_image (SharpenedImage, 0, 0, -1, -1, WindowHandle)</l>
+<l>    set_display_font (WindowHandle, 16, 'mono', 'true', 'false')</l>
+<l>    dev_display (SharpenedImage)</l>
+<c></c>
+<l>    MinArea := 10</l>
+<l>    MaxArea := 50000</l>
+<c>* Call segment_image_mser with default parameters and Polarity set to 'dark'.</c>
+<l>    segment_image_mser (SharpenedImage, MSERDark, MSERLight, 'dark', 10, [], 3, 'max_gray', 91)</l>
+<l>    disp_dark_light_results_COPY_1 (SharpenedImage, MSERDark, MSERLight, WindowHandle)</l>
+<l>    union1 (MSERDark, RegionUnion)</l>
+<l>    gen_region_contour_xld (ModelContours, Region2, 'filled')</l>
+<l>    difference (RegionUnion, Region2, RegionDifference)</l>
+<l>    dev_clear_window ()</l>
+<l>    dev_display (RegionDifference)</l>
+<l>    stop ()</l>
+<c>    </c>
+<l>    dev_clear_window ()</l>
+<l>    dev_display (Image2)</l>
+<c>    </c>
+<l>    gen_circle (ROI_0, 1004.7, 1146.19, 412.267)</l>
+<l>    reduce_domain (Image2, ROI_0, ImageReduced1)</l>
+<l>    find_shape_model (ImageReduced1, ModelID1, 0, rad(360), 0.1, 1, 0.5, 'interpolation', 0, 0.9, Row, Column, Angle, Score)</l>
+<l>    dev_display_shape_matching_results (ModelID1, 'red', Row, Column, Angle, 1, 1, 0)</l>
+<l>    gen_region_contour_xld (ModelContours1, Region, 'filled')</l>
+<l>    vector_angle_to_rigid (0, 0, 0, Row, Column, Angle, HomMat2D)</l>
+<l>    affine_trans_contour_xld (ModelContours1, ContoursAffineTrans, HomMat2D)</l>
+<l>    dev_clear_window ()</l>
+<l>    dev_display (Image2)</l>
+<c></c>
+<l>    gen_circle (ROI_0, 984.081, 1163.1, 432.78)</l>
+<l>    reduce_domain (Image2, ROI_0, ImageReduced2)</l>
+<l>    dev_clear_window ()</l>
+<l>    dev_display (ImageReduced2)</l>
+<l>    dev_display (ContoursAffineTrans)</l>
+<l>    gen_region_contour_xld (ContoursAffineTrans, Region4, 'filled')</l>
+<l>    dilation_circle (Region4, RegionDilation1, 4)</l>
+<l>    union1 (RegionDilation1, RegionDilation1)</l>
+<l>    complement (RegionDilation1, RegionComplement)</l>
+<l>    reduce_domain (ImageReduced2, RegionComplement, ImageReduced3)</l>
+<l>    dev_clear_window ()</l>
+<l>    dev_display (ImageReduced3)</l>
+<l>*   threshold (ImageReduced1, Region2, 128, 255)</l>
+<c>   </c>
+<l>    edges_image (ImageReduced3, ImaAmp, ImaDir, 'canny', 0.5, 'nms', 5, 15)</l>
+<l>    dev_clear_window ()</l>
+<l>    dev_display (ImaDir)</l>
+<l>*     threshold (ImaDir, Region2, 80, 255)</l>
+<l>*     select_shape (Region2, SelectedRegions, 'area', 'and', 1000, 99999)</l>
+<c>    </c>
+<l>    stop ()</l>
+<l>endfor</l>
+<c></c>
+</body>
+<docu id="main">
+<parameters/>
+</docu>
+</procedure>
+<procedure name="disp_dark_light_results_COPY_1">
+<interface>
+<io>
+<par name="Image" base_type="iconic" dimension="0"/>
+<par name="MSERDark" base_type="iconic" dimension="0"/>
+<par name="MSERLight" base_type="iconic" dimension="0"/>
+</io>
+<ic>
+<par name="WindowHandle" base_type="ctrl" dimension="0"/>
+</ic>
+</interface>
+<body>
+<l>dev_set_window (WindowHandle)</l>
+<l>dev_display (Image)</l>
+<l>dev_set_line_width (3)</l>
+<l>dev_set_draw ('margin')</l>
+<l>dev_set_color ('blue')</l>
+<l>dev_display (MSERDark)</l>
+<l>dev_set_color ('yellow')</l>
+<l>dev_display (MSERLight)</l>
+<c></c>
+<l>return ()</l>
+</body>
+<docu id="disp_dark_light_results_COPY_1">
+<parameters>
+<parameter id="Image"/>
+<parameter id="MSERDark"/>
+<parameter id="MSERLight"/>
+<parameter id="WindowHandle"/>
+</parameters>
+</docu>
+</procedure>
+</hdevelop>
