@@ -13,7 +13,7 @@
 <l>dilation1 (Region1, Region1, RegionDilation, 1)</l>
 <l>create_shape_model_xld (SelectedContours, 'auto', -0.39, 0.79, 'auto', 'auto', 'ignore_local_polarity', 5, ModelID)</l>
 <c>*</c>
-<l>list_image_files ('C:/Users/NIS/Desktop/Oila/new', 'default', [], ImageFiles)</l>
+<l>list_image_files ('C:/Users/NIS/Desktop/oila.5', 'default', [], ImageFiles)</l>
 <l>for Index := 0 to |ImageFiles|-1 by 1</l>
 <l>    read_image (Image, ImageFiles[Index])</l>
 <l>    gen_ellipse (ROI_0, 992.206, 1132.4, rad(-55.1287), 809.472, 808.55)</l>

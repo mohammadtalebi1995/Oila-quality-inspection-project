@@ -13,7 +13,7 @@
 <l>dilation1 (Region1, Region1, RegionDilation, 0.5)</l>
 <l>create_shape_model_xld (SelectedContours, 'auto', -0.39, 0.79, 'auto', 'auto', 'ignore_local_polarity', 5, ModelID)</l>
 <c>*</c>
-<l>read_image (Image1, 'C:/Users/NIS/Desktop/Oila/new/1.m.bmp')</l>
+<l>read_image (Image1, 'C:/Users/NIS/Desktop/mono.light/3.bmp')</l>
 <l>gen_ellipse (ROI_0, 992.206, 1132.4, rad(-55.1287), 809.472, 808.55)</l>
 <l>reduce_domain (Image1, ROI_0, Empty1)</l>
 <l>dev_clear_window ()</l>
@@ -27,7 +27,7 @@
 <l>get_shape_model_contours (ModelContours1, ModelID1, 1)</l>
 <c>*</c>
 <l>stop ()</l>
-<l>list_image_files ('C:/Users/NIS/Desktop/Oila/new', 'default', [], ImageFiles)</l>
+<l>list_image_files ('C:/Users/NIS/Desktop/mono.light', 'default', [], ImageFiles)</l>
 <l>for Index := 0 to |ImageFiles|-1 by 1</l>
 <l>    read_image (Image2, ImageFiles[Index])</l>
 <l>    gen_ellipse (ROI_0, 992.206, 1132.4, rad(-55.1287), 809.472, 808.55)</l>
@@ -47,7 +47,7 @@
 <l>    MinArea := 10</l>
 <l>    MaxArea := 50000</l>
 <c>* Call segment_image_mser with default parameters and Polarity set to 'dark'.</c>
-<l>    segment_image_mser (SharpenedImage, MSERDark, MSERLight, 'dark', 10, [], 3, 'max_gray', 91)</l>
+<l>    segment_image_mser (SharpenedImage, MSERDark, MSERLight, 'dark', 10, [], 3, 'max_gray', 70)</l>
 <l>    disp_dark_light_results_COPY_1 (SharpenedImage, MSERDark, MSERLight, WindowHandle)</l>
 <l>    union1 (MSERDark, RegionUnion)</l>
 <l>    gen_region_contour_xld (ModelContours, Region2, 'filled')</l>
@@ -55,6 +55,9 @@
 <l>    dev_clear_window ()</l>
 <l>    dev_display (RegionDifference)</l>
 <l>    stop ()</l>
+<c>    </c>
+<c>    *******************************************</c>
+<c>    *******************************************</c>
 <c>    </c>
 <l>    dev_clear_window ()</l>
 <l>    dev_display (Image2)</l>
@@ -75,9 +78,10 @@
 <l>    dev_display (ImageReduced2)</l>
 <l>    dev_display (ContoursAffineTrans)</l>
 <l>    gen_region_contour_xld (ContoursAffineTrans, Region4, 'filled')</l>
-<l>    dilation_circle (Region4, RegionDilation1, 4)</l>
-<l>    union1 (RegionDilation1, RegionDilation1)</l>
-<l>    complement (RegionDilation1, RegionComplement)</l>
+<l>    dilation_circle (Region4, RegionDilation1, 14)</l>
+<l>    fill_up (RegionDilation1, RegionFillUp)</l>
+<l>    union1 (RegionFillUp, RegionFillUp)</l>
+<l>    complement (RegionFillUp, RegionComplement)</l>
 <l>    reduce_domain (ImageReduced2, RegionComplement, ImageReduced3)</l>
 <l>    dev_clear_window ()</l>
 <l>    dev_display (ImageReduced3)</l>
@@ -89,6 +93,11 @@
 <l>*     threshold (ImaDir, Region2, 80, 255)</l>
 <l>*     select_shape (Region2, SelectedRegions, 'area', 'and', 1000, 99999)</l>
 <c>    </c>
+<l>    gen_rectangle2 (ROI_0, 976.575, 1183.62, rad(-94.0883), 248.858, 250.127)</l>
+<l>    reduce_domain (ImaDir, ROI_0, Red)</l>
+<l>    threshold (Red, Region3, 128, 255)</l>
+<l>    dev_clear_window ()</l>
+<l>    dev_display (Region3)</l>
 <l>    stop ()</l>
 <l>endfor</l>
 <c></c>
