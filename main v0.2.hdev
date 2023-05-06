@@ -13,7 +13,7 @@
 <l>dilation1 (Region1, Region1, RegionDilation, 0.5)</l>
 <l>create_shape_model_xld (SelectedContours, 'auto', -0.39, 0.79, 'auto', 'auto', 'ignore_local_polarity', 5, ModelID)</l>
 <c>*</c>
-<l>read_image (Image1, 'C:/Users/NIS/Desktop/mono.light/3.bmp')</l>
+<l>read_image (Image1, 'C:/Users/NIS/Desktop/Oila project/Oila-quality-inspection-project/main light/33.bmp')</l>
 <l>gen_ellipse (ROI_0, 992.206, 1132.4, rad(-55.1287), 809.472, 808.55)</l>
 <l>reduce_domain (Image1, ROI_0, Empty1)</l>
 <l>dev_clear_window ()</l>
@@ -40,7 +40,7 @@
 <l>    emphasize (Empty2, SharpenedImage, 7, 7, 1)</l>
 <l>    dev_display (SharpenedImage)</l>
 <l>    dev_close_window ()</l>
-<l>    dev_open_window_fit_image (SharpenedImage, 0, 0, -1, -1, WindowHandle)</l>
+<l>    dev_open_window_fit_image (SharpenedImage, 0, 0, 500, 500, WindowHandle)</l>
 <l>    set_display_font (WindowHandle, 16, 'mono', 'true', 'false')</l>
 <l>    dev_display (SharpenedImage)</l>
 <c></c>
@@ -97,6 +97,7 @@
 <l>    reduce_domain (ImaDir, ROI_0, Red)</l>
 <l>    threshold (Red, Region3, 128, 255)</l>
 <l>    dev_clear_window ()</l>
+<l>    dev_display (Image2)</l>
 <l>    dev_display (Region3)</l>
 <l>    stop ()</l>
 <l>endfor</l>

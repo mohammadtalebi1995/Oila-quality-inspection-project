@@ -86,7 +86,12 @@
 <l>    dev_display (ImaDir)</l>
 <l>*     threshold (ImaDir, Region2, 80, 255)</l>
 <l>*     select_shape (Region2, SelectedRegions, 'area', 'and', 1000, 99999)</l>
-<c>    </c>
+<l>    gen_rectangle2 (ROI_0, 976.575, 1183.62, rad(-94.0883), 248.858, 250.127)</l>
+<l>    reduce_domain (ImaDir, ROI_0, Red)</l>
+<l>    threshold (Red, Region3, 128, 255)</l>
+<l>    dev_clear_window ()</l>
+<l>    dev_display (Image2)</l>
+<l>    dev_display (Region3)</l>
 <l>    stop ()</l>
 <l>endfor</l>
 <c></c>

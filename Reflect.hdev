@@ -19,7 +19,7 @@
 <l>find_shape_model (ImageRed, ModelID, 0, rad(360), 0.1, 1, 0.5, 'interpolation', 0, 0.9, Row, Column, Angle, Score)</l>
 <l>dev_display_shape_matching_results (ModelID, 'red', Row, Column, Angle, 1, 1, 0)</l>
 <c>*</c>
-<l>list_image_files ('C:/Users/NIS/Desktop/Oila/new', 'default', [], ImageFiles)</l>
+<l>list_image_files ('C:/Users/NIS/Desktop/Oila project/Oila-quality-inspection-project/mono.light', 'default', [], ImageFiles)</l>
 <l>for Index := 0 to |ImageFiles|-1 by 1</l>
 <l>    read_image (Image, ImageFiles[Index])</l>
 <l>*     find_shape_model (Image, ModelID, 0, rad(360), 0.1, 1, 0.5, 'interpolation', 0, 0.9, Row, Column, Angle, Score)</l>
@@ -43,6 +43,7 @@
 <l>    trans_to_rgb (ImageColor, ImageColor, ImageColor, ImageRed, ImageGreen, ImageBlue, 'cielab')</l>
 <l>    dev_display (Image)</l>
 <l>    threshold (ImageRed, Region, 128, 255)</l>
+<c>    </c>
 <l>    stop ()</l>
 <l>endfor</l>
 </body>
