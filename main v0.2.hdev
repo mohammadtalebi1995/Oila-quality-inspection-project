@@ -3,6 +3,15 @@
 <procedure name="main">
 <interface/>
 <body>
+<c>*** Result := 1 =&gt; Log := 'Good'</c>
+<c>*** Result := 4 =&gt; Log := 'Bad'</c>
+<c>*** Result := 8 =&gt; Log := 'Rework'</c>
+<c>*** Result := 3 =&gt; Log := 'Default'</c>
+<c>*** Result := 0 =&gt; Log := 'Disable'</c>
+<c>***</c>
+<l>Log := 'Default'</l>
+<l>Result := 3</l>
+<c>***</c>
 <l>read_image (Image, 'C:/Users/NIS/Desktop/Oila/color/dark room real/match/empty.bmp')</l>
 <l>gen_ellipse (ROI_0, 992.206, 1132.4, rad(-55.1287), 809.472, 808.55)</l>
 <l>reduce_domain (Image, ROI_0, Empty)</l>
@@ -43,17 +52,27 @@
 <l>    dev_open_window_fit_image (SharpenedImage, 0, 0, 500, 500, WindowHandle)</l>
 <l>    set_display_font (WindowHandle, 16, 'mono', 'true', 'false')</l>
 <l>    dev_display (SharpenedImage)</l>
-<c></c>
+<l>    median_rect (SharpenedImage, ImageMedian2, 15, 15)</l>
 <l>    MinArea := 10</l>
 <l>    MaxArea := 50000</l>
-<c>* Call segment_image_mser with default parameters and Polarity set to 'dark'.</c>
-<l>    segment_image_mser (SharpenedImage, MSERDark, MSERLight, 'dark', 10, [], 3, 'max_gray', 70)</l>
-<l>    disp_dark_light_results_COPY_1 (SharpenedImage, MSERDark, MSERLight, WindowHandle)</l>
+<c>    * Call segment_image_mser with default parameters and Polarity set to 'dark'.</c>
+<l>    segment_image_mser (ImageMedian2, MSERDark, MSERLight, 'dark', 10, [], 3, 'max_gray', 70)</l>
+<l>    disp_dark_light_results_COPY_1 (ImageMedian2, MSERDark, MSERLight, WindowHandle)</l>
 <l>    union1 (MSERDark, RegionUnion)</l>
 <l>    gen_region_contour_xld (ModelContours, Region2, 'filled')</l>
 <l>    difference (RegionUnion, Region2, RegionDifference)</l>
 <l>    dev_clear_window ()</l>
 <l>    dev_display (RegionDifference)</l>
+<l>    gen_empty_obj (ErrorRegion)</l>
+<l>    union1 (RegionDifference, ErrorRegion)</l>
+<l>    area_center (ErrorRegion, Area, Row1, Column1)</l>
+<l>    if (Area &gt;= 600)</l>
+<l>        Log := 'Bad'</l>
+<l>        Result := 4</l>
+<l>    else</l>
+<l>        Log := 'Good'</l>
+<l>        Result := 1</l>
+<l>    endif </l>
 <l>    stop ()</l>
 <c>    </c>
 <c>    *******************************************</c>
@@ -71,37 +90,48 @@
 <l>    affine_trans_contour_xld (ModelContours1, ContoursAffineTrans, HomMat2D)</l>
 <l>    dev_clear_window ()</l>
 <l>    dev_display (Image2)</l>
-<c></c>
+<c>    </c>
 <l>    gen_circle (ROI_0, 984.081, 1163.1, 432.78)</l>
 <l>    reduce_domain (Image2, ROI_0, ImageReduced2)</l>
 <l>    dev_clear_window ()</l>
 <l>    dev_display (ImageReduced2)</l>
 <l>    dev_display (ContoursAffineTrans)</l>
 <l>    gen_region_contour_xld (ContoursAffineTrans, Region4, 'filled')</l>
-<l>    dilation_circle (Region4, RegionDilation1, 14)</l>
-<l>    fill_up (RegionDilation1, RegionFillUp)</l>
+<l>*     dilation_circle (Region4, RegionDilation1, 14)</l>
+<l>    fill_up (Region4, RegionFillUp)</l>
 <l>    union1 (RegionFillUp, RegionFillUp)</l>
 <l>    complement (RegionFillUp, RegionComplement)</l>
 <l>    reduce_domain (ImageReduced2, RegionComplement, ImageReduced3)</l>
 <l>    dev_clear_window ()</l>
 <l>    dev_display (ImageReduced3)</l>
-<l>*   threshold (ImageReduced1, Region2, 128, 255)</l>
-<c>   </c>
-<l>    edges_image (ImageReduced3, ImaAmp, ImaDir, 'canny', 0.5, 'nms', 5, 15)</l>
+<l>*     threshold (ImageReduced1, Region2, 128, 255)</l>
+<l>*     laplace (ImageReduced3, ImageLaplace, 'absolute', 3, 'n_8_isotropic')</l>
+<l>*     threshold (ImageLaplace, Region5, 35, 255)</l>
+<l>    median_rect (ImageReduced3, ImageMedian1, 15, 15)</l>
+<l>    edges_image (ImageMedian1, ImaAmp, ImaDir, 'sobel_fast', 0.5, 'nms', 5, 20)</l>
 <l>    dev_clear_window ()</l>
-<l>    dev_display (ImaDir)</l>
+<l>    dev_display (ImaAmp)</l>
 <l>*     threshold (ImaDir, Region2, 80, 255)</l>
 <l>*     select_shape (Region2, SelectedRegions, 'area', 'and', 1000, 99999)</l>
 <c>    </c>
 <l>    gen_rectangle2 (ROI_0, 976.575, 1183.62, rad(-94.0883), 248.858, 250.127)</l>
-<l>    reduce_domain (ImaDir, ROI_0, Red)</l>
-<l>    threshold (Red, Region3, 128, 255)</l>
+<l>    reduce_domain (ImaAmp, ROI_0, Red)</l>
+<l>    threshold (Red, Region3, 10, 255)</l>
+<l>    gen_empty_obj (ErrorRegion)</l>
+<l>    union1 (Region3, ErrorRegion)</l>
 <l>    dev_clear_window ()</l>
 <l>    dev_display (Image2)</l>
 <l>    dev_display (Region3)</l>
+<l>    area_center (ErrorRegion, Area, Row1, Column1)</l>
+<l>    if (Area &gt;= 600)</l>
+<l>        Log := 'Bad'</l>
+<l>        Result := 4</l>
+<l>    else</l>
+<l>        Log := 'Good'</l>
+<l>        Result := 1</l>
+<l>    endif  </l>
 <l>    stop ()</l>
 <l>endfor</l>
-<c></c>
 </body>
 <docu id="main">
 <parameters/>

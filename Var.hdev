@@ -9,8 +9,11 @@
 <l>    gen_ellipse (ROI_0, 992.206, 1132.4, rad(-55.1287), 809.472, 808.55)</l>
 <l>    reduce_domain (Image, ROI_0, Empty)</l>
 <l>*     var_threshold (Empty, Region, 250, 250, 1, 50, 'light')</l>
-<l>    laplace (Empty, ImageLaplace, 'absolute',3, 'n_8_isotropic')</l>
-<l>    threshold (ImageLaplace, Region1, 35, 255)</l>
+<c>    </c>
+<l>    gen_rectangle1 (ROI_0, 663.385, 868.54, 1270.93, 1470.75)</l>
+<l>    reduce_domain (Empty, ROI_0, ImageReduced)</l>
+<l>    median_rect (ImageReduced, ImageMedian, 31, 15)</l>
+<l>    threshold (ImageMedian, Region, 175, 255)</l>
 <l>    stop ()</l>
 <l>endfor</l>
 <c></c>
