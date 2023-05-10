@@ -9,102 +9,269 @@
 <c>*** Result := 3 =&gt; Log := 'Default'</c>
 <c>*** Result := 0 =&gt; Log := 'Disable'</c>
 <c>***</c>
+<l>dev_set_draw ('margin')</l>
+<l>dev_clear_window ()</l>
+<c>***</c>
 <l>Log := 'Default'</l>
 <l>Result := 3</l>
 <c>***</c>
+<l>Algorithms := [0, 0]</l>
+<c>***</c>
+<l>MSER_Mask_Width_Median := 15</l>
+<l>MSER_Mask_Height_Median := 15</l>
+<l>MSER_Min_Area := 10</l>
+<l>MSER_Max_Area := []</l>
+<l>MSER_Delta := 3</l>
+<l>MSER_Max_Gray_Value := 70</l>
+<l>MSER_Condition_Area := 200</l>
+<c>***</c>
+<l>Threshold_Mask_Width_Median := 31</l>
+<l>Threshold_Mask_Height_Median := 15</l>
+<l>Threshold_Min_Gray := 10</l>
+<l>Threshold_Max_Gray := 255</l>
+<l>Threshold_Condition_Area := 600</l>
+<c>***</c>
 <l>list_image_files ('C:/Users/NIS/Desktop/mono.light', 'default', [], ImageFiles)</l>
+<c>***</c>
 <l>for Index := 0 to |ImageFiles|-1 by 1</l>
-<l>    read_image (Image2, ImageFiles[Index])</l>
-<l>    gen_ellipse (ROI_0, 992.206, 1132.4, rad(-55.1287), 809.472, 808.55)</l>
-<l>    reduce_domain (Image2, ROI_0, Empty2)</l>
-<l>    emphasize (Empty2, SharpenedImage, 7, 7, 1)</l>
-<l>    dev_display (SharpenedImage)</l>
-<l>    dev_close_window ()</l>
-<l>    dev_open_window_fit_image (SharpenedImage, 0, 0, 500, 500, WindowHandle)</l>
-<l>    set_display_font (WindowHandle, 16, 'mono', 'true', 'false')</l>
-<l>    dev_display (SharpenedImage)</l>
-<l>    median_rect (SharpenedImage, ImageMedian2, 15, 15)</l>
-<l>    MinArea := 10</l>
-<l>    MaxArea := 50000</l>
-<l>    shock_filter (ImageMedian2, SharpenedImage1, 0.5, 10, 'canny', 1)</l>
-<c>    * Call segment_image_mser with default parameters and Polarity set to 'dark'.</c>
-<l>    segment_image_mser (SharpenedImage1, MSERDark, MSERLight, 'dark', 10, [], 3, 'max_gray', 70)</l>
-<l>    disp_dark_light_results_COPY_1 (SharpenedImage1, MSERDark, MSERLight, WindowHandle)</l>
-<l>    union1 (MSERDark, RegionUnion)</l>
-<l>    dev_clear_window ()</l>
-<l>    dev_display (RegionUnion)</l>
-<l>    gen_empty_obj (ErrorRegion)</l>
-<l>    union1 (RegionUnion, ErrorRegion)</l>
-<l>    area_center (ErrorRegion, Area, Row1, Column1)</l>
-<l>    if (Area &gt;= 200)</l>
-<l>        Log := 'Bad'</l>
-<l>        Result := 4</l>
-<l>    else</l>
-<l>        Log := 'Good'</l>
-<l>        Result := 1</l>
-<l>    endif </l>
-<l>    stop ()</l>
-<c>    </c>
-<c>    *******************************************************************</c>
-<c>        </c>
-<l>    gen_circle (ROI_0, 984.081, 1163.1, 432.78)</l>
-<l>    reduce_domain (Image2, ROI_0, ImageReduced2)</l>
-<l>    dev_clear_window ()</l>
-<l>    dev_display (ImageReduced2)</l>
-<l>    median_rect (ImageReduced2, ImageMedian1, 31, 15)</l>
-<l>    edges_image (ImageMedian1, ImaAmp, ImaDir, 'sobel_fast', 0.5, 'nms', 5, 20)    </l>
-<l>    gen_rectangle2 (ROI_0, 976.575, 1183.62, rad(-94.0883), 248.858, 250.127)</l>
-<l>    reduce_domain (ImaAmp, ROI_0, Red)</l>
-<l>    threshold (Red, Region3, 10, 255)</l>
-<l>    gen_empty_obj (ErrorRegion)</l>
-<l>    union1 (Region3, ErrorRegion)</l>
-<l>    dev_clear_window ()</l>
-<l>    dev_display (Image2)</l>
-<l>    dev_display (Region3)</l>
-<l>    area_center (ErrorRegion, Area, Row1, Column1)</l>
-<l>    if (Area &gt;= 600)</l>
-<l>        Log := 'Bad'</l>
-<l>        Result := 4</l>
-<l>    else</l>
-<l>        Log := 'Good'</l>
-<l>        Result := 1</l>
-<l>    endif  </l>
+<l>    read_image (Image, ImageFiles[Index])</l>
+<c>    ***</c>
+<l>    Oila_Process (Image, MSER_ErrorRegion, Threshold_ErrorRegion, Algorithms, MSER_Mask_Width_Median, MSER_Mask_Height_Median, MSER_Min_Area, MSER_Max_Area, MSER_Delta, MSER_Max_Gray_Value, MSER_Condition_Area, Threshold_Mask_Width_Median, Threshold_Mask_Height_Median, Threshold_Min_Gray, Threshold_Max_Gray, Threshold_Condition_Area, Log, Result)</l>
+<c>    ***</c>
 <l>    stop ()</l>
 <l>endfor</l>
+<c>***</c>
 </body>
 <docu id="main">
 <parameters/>
 </docu>
 </procedure>
-<procedure name="disp_dark_light_results_COPY_1">
+<procedure name="Oila_Process_MSER">
 <interface>
 <io>
 <par name="Image" base_type="iconic" dimension="0"/>
-<par name="MSERDark" base_type="iconic" dimension="0"/>
-<par name="MSERLight" base_type="iconic" dimension="0"/>
 </io>
+<oo>
+<par name="ErrorRegion" base_type="iconic" dimension="0"/>
+</oo>
 <ic>
-<par name="WindowHandle" base_type="ctrl" dimension="0"/>
+<par name="MSER_Mask_Width_Median" base_type="ctrl" dimension="0"/>
+<par name="MSER_Mask_Height_Median" base_type="ctrl" dimension="0"/>
+<par name="MSER_Min_Area" base_type="ctrl" dimension="0"/>
+<par name="MSER_Max_Area" base_type="ctrl" dimension="0"/>
+<par name="MSER_Delta" base_type="ctrl" dimension="0"/>
+<par name="MSER_Max_Gray_Value" base_type="ctrl" dimension="0"/>
+<par name="MSER_Condition_Area" base_type="ctrl" dimension="0"/>
 </ic>
+<oc>
+<par name="Log" base_type="ctrl" dimension="0"/>
+<par name="Result" base_type="ctrl" dimension="0"/>
+</oc>
 </interface>
 <body>
-<l>dev_set_window (WindowHandle)</l>
-<l>dev_display (Image)</l>
-<l>dev_set_line_width (3)</l>
-<l>dev_set_draw ('margin')</l>
-<l>dev_set_color ('blue')</l>
-<l>dev_display (MSERDark)</l>
-<l>dev_set_color ('yellow')</l>
-<l>dev_display (MSERLight)</l>
-<c></c>
+<l>Log := 'Default'</l>
+<l>Result := 3</l>
+<c>***</c>
+<l>gen_empty_obj (ErrorRegion)</l>
+<l>gen_empty_obj (MSERDark)</l>
+<l>gen_empty_obj (MSERLight)</l>
+<l>gen_empty_obj (RegionUnion)</l>
+<c>***</c>
+<l>gen_rectangle1 (ROI, 644.385, 892.162, 1261.91, 1484.67)</l>
+<l>reduce_domain (Image, ROI, Image_Reduced)</l>
+<l>median_rect (Image_Reduced, ImageMedian, MSER_Mask_Width_Median, MSER_Mask_Height_Median)</l>
+<l>shock_filter (ImageMedian, SharpenedImage, 0.5, 10, 'canny', 1)</l>
+<l>segment_image_mser (SharpenedImage, MSERDark, MSERLight, 'dark', MSER_Min_Area, MSER_Max_Area, MSER_Delta, 'max_gray', MSER_Max_Gray_Value)</l>
+<l>union1 (MSERDark, RegionUnion)</l>
+<l>closing_circle (RegionUnion, ErrorRegion, 5)</l>
+<l>area_center (ErrorRegion, Area, Row, Column)</l>
+<c>***</c>
+<l>if (Area &gt;= MSER_Condition_Area)</l>
+<l>    Log := 'Bad'</l>
+<l>    Result := 4</l>
+<l>    Area := 0</l>
+<l>    Row := 0</l>
+<l>    Column := 0</l>
+<l>else</l>
+<l>    Log := 'Good'</l>
+<l>    Result := 1</l>
+<l>endif</l>
+<c>***</c>
 <l>return ()</l>
 </body>
-<docu id="disp_dark_light_results_COPY_1">
+<docu id="Oila_Process_MSER">
 <parameters>
+<parameter id="ErrorRegion"/>
 <parameter id="Image"/>
-<parameter id="MSERDark"/>
-<parameter id="MSERLight"/>
-<parameter id="WindowHandle"/>
+<parameter id="Log"/>
+<parameter id="MSER_Condition_Area"/>
+<parameter id="MSER_Delta"/>
+<parameter id="MSER_Mask_Height_Median"/>
+<parameter id="MSER_Mask_Width_Median"/>
+<parameter id="MSER_Max_Area"/>
+<parameter id="MSER_Max_Gray_Value"/>
+<parameter id="MSER_Min_Area"/>
+<parameter id="Result"/>
+</parameters>
+</docu>
+</procedure>
+<procedure name="Oila_Process_Threshold">
+<interface>
+<io>
+<par name="Image" base_type="iconic" dimension="0"/>
+</io>
+<oo>
+<par name="ErrorRegion" base_type="iconic" dimension="0"/>
+</oo>
+<ic>
+<par name="Threshold_Mask_Width_Median" base_type="ctrl" dimension="0"/>
+<par name="Threshold_Mask_Height_Median" base_type="ctrl" dimension="0"/>
+<par name="Threshold_Min_Gray" base_type="ctrl" dimension="0"/>
+<par name="Threshold_Max_Gray" base_type="ctrl" dimension="0"/>
+<par name="Threshold_Condition_Area" base_type="ctrl" dimension="0"/>
+</ic>
+<oc>
+<par name="Log" base_type="ctrl" dimension="0"/>
+<par name="Result" base_type="ctrl" dimension="0"/>
+</oc>
+</interface>
+<body>
+<l>Log := 'Default'</l>
+<l>Result := 3</l>
+<c>***</c>
+<l>gen_empty_obj (ErrorRegion)</l>
+<l>gen_empty_obj (Region)</l>
+<c>***</c>
+<l>gen_rectangle1 (ROI, 644.385, 892.162, 1261.91, 1484.67)</l>
+<l>reduce_domain (Image, ROI, Image_Reduced)</l>
+<l>median_rect (Image_Reduced, ImageMedian, Threshold_Mask_Width_Median, Threshold_Mask_Height_Median)</l>
+<l>edges_image (ImageMedian, ImaAmp, ImaDir, 'sobel_fast', 1.1, 'nms', 5, 20)    </l>
+<l>threshold (ImaAmp, Region, Threshold_Min_Gray, Threshold_Max_Gray)</l>
+<l>union1 (Region, ErrorRegion)   </l>
+<l>area_center (ErrorRegion, Area, Row, Column)</l>
+<c>***</c>
+<l>if (Area &gt;= Threshold_Condition_Area)</l>
+<l>    Log := 'Bad'</l>
+<l>    Result := 4</l>
+<l>    Area := 0</l>
+<l>    Row := 0</l>
+<l>    Column := 0</l>
+<l>else</l>
+<l>    Log := 'Good'</l>
+<l>    Result := 1</l>
+<l>endif </l>
+<l>return ()</l>
+</body>
+<docu id="Oila_Process_Threshold">
+<parameters>
+<parameter id="ErrorRegion"/>
+<parameter id="Image"/>
+<parameter id="Log"/>
+<parameter id="Result"/>
+<parameter id="Threshold_Condition_Area"/>
+<parameter id="Threshold_Mask_Height_Median"/>
+<parameter id="Threshold_Mask_Width_Median"/>
+<parameter id="Threshold_Max_Gray"/>
+<parameter id="Threshold_Min_Gray"/>
+</parameters>
+</docu>
+</procedure>
+<procedure name="Oila_Process">
+<interface>
+<io>
+<par name="Image" base_type="iconic" dimension="0"/>
+</io>
+<oo>
+<par name="MSER_ErrorRegion" base_type="iconic" dimension="0"/>
+<par name="Threshold_ErrorRegion" base_type="iconic" dimension="0"/>
+</oo>
+<ic>
+<par name="Algorithms" base_type="ctrl" dimension="0"/>
+<par name="MSER_Mask_Width_Median" base_type="ctrl" dimension="0"/>
+<par name="MSER_Mask_Height_Median" base_type="ctrl" dimension="0"/>
+<par name="MSER_Min_Area" base_type="ctrl" dimension="0"/>
+<par name="MSER_Max_Area" base_type="ctrl" dimension="0"/>
+<par name="MSER_Delta" base_type="ctrl" dimension="0"/>
+<par name="MSER_Max_Gray_Value" base_type="ctrl" dimension="0"/>
+<par name="MSER_Condition_Area" base_type="ctrl" dimension="0"/>
+<par name="Threshold_Mask_Width_Median" base_type="ctrl" dimension="0"/>
+<par name="Threshold_Mask_Height_Median" base_type="ctrl" dimension="0"/>
+<par name="Threshold_Min_Gray" base_type="ctrl" dimension="0"/>
+<par name="Threshold_Max_Gray" base_type="ctrl" dimension="0"/>
+<par name="Threshold_Condition_Area" base_type="ctrl" dimension="0"/>
+</ic>
+<oc>
+<par name="Log" base_type="ctrl" dimension="0"/>
+<par name="Result" base_type="ctrl" dimension="0"/>
+</oc>
+</interface>
+<body>
+<l>if (Algorithms[0] == 0 and Algorithms[1] == 0)</l>
+<l>    Log := 'All Algorithms are Disabled'</l>
+<l>    Result := 3</l>
+<l>    return ()</l>
+<l>endif</l>
+<c>***</c>
+<l>if (Algorithms[0] == 1)</l>
+<l>    Oila_Process_MSER (Image, MSER_ErrorRegion, MSER_Mask_Width_Median, MSER_Mask_Height_Median, MSER_Min_Area, MSER_Max_Area, MSER_Delta, MSER_Max_Gray_Value, MSER_Condition_Area, MSER_Log, MSER_Result)</l>
+<l>else</l>
+<l>    MSER_Log := 'MSER Algorithms is Disabled'</l>
+<l>    MSER_Result := 0</l>
+<l>endif</l>
+<c>***</c>
+<l>if (Algorithms[1] == 1)       </l>
+<l>    Oila_Process_Threshold (Image, Threshold_ErrorRegion, Threshold_Mask_Width_Median, Threshold_Mask_Height_Median, Threshold_Min_Gray, Threshold_Max_Gray, Threshold_Condition_Area, Threshold_Log, Threshold_Result)</l>
+<l>else</l>
+<l>    Threshold_Log := 'Threshold Algorithms is Disabled'</l>
+<l>    Threshold_Result := 0</l>
+<l>endif</l>
+<c>***</c>
+<l>if (MSER_Result == 4 or Threshold_Result == 4)</l>
+<l>    Log := 'Bad'</l>
+<l>    Result := 4</l>
+<l>    return ()</l>
+<l>endif</l>
+<c>***</c>
+<l>if (MSER_Result == 1 and Threshold_Result == 1)</l>
+<l>    Log := 'Good'</l>
+<l>    Result := 1</l>
+<l>    return ()</l>
+<l>endif</l>
+<c>***</c>
+<l>if (MSER_Result == 1 and Threshold_Result == 0)</l>
+<l>    Log := 'Good'</l>
+<l>    Result := 1</l>
+<l>    return ()</l>
+<l>endif</l>
+<c>***</c>
+<l>if (MSER_Result == 0 and Threshold_Result == 1)</l>
+<l>    Log := 'Good'</l>
+<l>    Result := 1</l>
+<l>    return ()</l>
+<l>endif</l>
+<c>***</c>
+<l>return ()</l>
+</body>
+<docu id="Oila_Process">
+<parameters>
+<parameter id="Algorithms"/>
+<parameter id="Image"/>
+<parameter id="Log"/>
+<parameter id="MSER_Condition_Area"/>
+<parameter id="MSER_Delta"/>
+<parameter id="MSER_ErrorRegion"/>
+<parameter id="MSER_Mask_Height_Median"/>
+<parameter id="MSER_Mask_Width_Median"/>
+<parameter id="MSER_Max_Area"/>
+<parameter id="MSER_Max_Gray_Value"/>
+<parameter id="MSER_Min_Area"/>
+<parameter id="Result"/>
+<parameter id="Threshold_Condition_Area"/>
+<parameter id="Threshold_ErrorRegion"/>
+<parameter id="Threshold_Mask_Height_Median"/>
+<parameter id="Threshold_Mask_Width_Median"/>
+<parameter id="Threshold_Max_Gray"/>
+<parameter id="Threshold_Min_Gray"/>
 </parameters>
 </docu>
 </procedure>
