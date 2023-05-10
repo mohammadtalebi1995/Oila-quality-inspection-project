@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hdevelop file_version="1.2" halcon_version="18.11.0.1">
+<procedure name="main">
+<interface/>
+<body>
+<c>*** Result := 1 =&gt; Log := 'Good'</c>
+<c>*** Result := 4 =&gt; Log := 'Bad'</c>
+<c>*** Result := 8 =&gt; Log := 'Rework'</c>
+<c>*** Result := 3 =&gt; Log := 'Default'</c>
+<c>*** Result := 0 =&gt; Log := 'Disable'</c>
+<c>***</c>
+<l>Log := 'Default'</l>
+<l>Result := 3</l>
+<c>***</c>
+<l>list_image_files ('C:/Users/NIS/Desktop/Oila project/Oila-quality-inspection-project/oila.5', 'default', [], ImageFiles)</l>
+<l>for Index := 0 to |ImageFiles|-1 by 1</l>
+<l>    read_image (Image2, ImageFiles[Index])</l>
+<l>    gen_ellipse (ROI_0, 992.206, 1132.4, rad(-55.1287), 809.472, 808.55)</l>
+<l>    reduce_domain (Image2, ROI_0, Empty2)</l>
+<l>    emphasize (Empty2, SharpenedImage, 7, 7, 1)</l>
+<l>    dev_display (SharpenedImage)</l>
+<l>    dev_close_window ()</l>
+<l>    dev_open_window_fit_image (SharpenedImage, 0, 0, 500, 500, WindowHandle)</l>
+<l>    set_display_font (WindowHandle, 16, 'mono', 'true', 'false')</l>
+<l>    dev_display (SharpenedImage)</l>
+<l>    median_rect (SharpenedImage, ImageMedian2, 15, 15)</l>
+<l>    MinArea := 10</l>
+<l>    MaxArea := 50000</l>
+<l>    shock_filter (ImageMedian2, SharpenedImage1, 0.5, 10, 'canny', 1)</l>
+<c>    * Call segment_image_mser with default parameters and Polarity set to 'dark'.</c>
+<l>    segment_image_mser (SharpenedImage1, MSERDark, MSERLight, 'dark', 10, [], 3, 'max_gray', 70)</l>
+<l>    disp_dark_light_results_COPY_1 (SharpenedImage1, MSERDark, MSERLight, WindowHandle)</l>
+<l>    union1 (MSERDark, RegionUnion)</l>
+<l>    dev_clear_window ()</l>
+<l>    dev_display (RegionUnion)</l>
+<l>    gen_empty_obj (ErrorRegion)</l>
+<l>    union1 (RegionUnion, ErrorRegion)</l>
+<l>    area_center (ErrorRegion, Area, Row1, Column1)</l>
+<l>    if (Area &gt;= 200)</l>
+<l>        Log := 'Bad'</l>
+<l>        Result := 4</l>
+<l>    else</l>
+<l>        Log := 'Good'</l>
+<l>        Result := 1</l>
+<l>    endif </l>
+<l>    stop ()</l>
+<c>    </c>
+<c>    *******************************************************************</c>
+<c>        </c>
+<l>    gen_circle (ROI_0, 984.081, 1163.1, 432.78)</l>
+<l>    reduce_domain (Image2, ROI_0, ImageReduced2)</l>
+<l>    dev_clear_window ()</l>
+<l>    dev_display (ImageReduced2)</l>
+<l>    median_rect (ImageReduced2, ImageMedian1, 31, 15)</l>
+<l>    edges_image (ImageMedian1, ImaAmp, ImaDir, 'sobel_fast', 0.5, 'nms', 5, 20)    </l>
+<l>    gen_rectangle2 (ROI_0, 976.575, 1183.62, rad(-94.0883), 248.858, 250.127)</l>
+<l>    reduce_domain (ImaAmp, ROI_0, Red)</l>
+<l>    threshold (Red, Region3, 10, 255)</l>
+<l>    gen_empty_obj (ErrorRegion)</l>
+<l>    union1 (Region3, ErrorRegion)</l>
+<l>    dev_clear_window ()</l>
+<l>    dev_display (Image2)</l>
+<l>    dev_display (Region3)</l>
+<l>    area_center (ErrorRegion, Area, Row1, Column1)</l>
+<l>    if (Area &gt;= 600)</l>
+<l>        Log := 'Bad'</l>
+<l>        Result := 4</l>
+<l>    else</l>
+<l>        Log := 'Good'</l>
+<l>        Result := 1</l>
+<l>    endif  </l>
+<l>    stop ()</l>
+<l>endfor</l>
+</body>
+<docu id="main">
+<parameters/>
+</docu>
+</procedure>
+<procedure name="disp_dark_light_results_COPY_1">
+<interface>
+<io>
+<par name="Image" base_type="iconic" dimension="0"/>
+<par name="MSERDark" base_type="iconic" dimension="0"/>
+<par name="MSERLight" base_type="iconic" dimension="0"/>
+</io>
+<ic>
+<par name="WindowHandle" base_type="ctrl" dimension="0"/>
+</ic>
+</interface>
+<body>
+<l>dev_set_window (WindowHandle)</l>
+<l>dev_display (Image)</l>
+<l>dev_set_line_width (3)</l>
+<l>dev_set_draw ('margin')</l>
+<l>dev_set_color ('blue')</l>
+<l>dev_display (MSERDark)</l>
+<l>dev_set_color ('yellow')</l>
+<l>dev_display (MSERLight)</l>
+<c></c>
+<l>return ()</l>
+</body>
+<docu id="disp_dark_light_results_COPY_1">
+<parameters>
+<parameter id="Image"/>
+<parameter id="MSERDark"/>
+<parameter id="MSERLight"/>
+<parameter id="WindowHandle"/>
+</parameters>
+</docu>
+</procedure>
+</hdevelop>
