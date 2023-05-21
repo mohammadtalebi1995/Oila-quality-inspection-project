@@ -15,7 +15,7 @@
 <l>Log := 'Default'</l>
 <l>Result := 3</l>
 <c>***</c>
-<l>Algorithms := [0, 0]</l>
+<l>Algorithms := [1, 1]</l>
 <c>***</c>
 <l>MSER_Mask_Width_Median := 15</l>
 <l>MSER_Mask_Height_Median := 15</l>
